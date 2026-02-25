@@ -23,7 +23,7 @@ export const AirportSchema = v.object({
 export const LocationSchema = v.object({
   ...AirportSchema.entries,
   time: v.string(),
-  terminal: v.string(),
+  terminal: v.nullable(v.string()),
 });
 
 export const ArrivalLocationSchema = v.object({
@@ -50,7 +50,6 @@ export const FlightDurationSchema = v.object({
   days: v.number(),
   hours: v.number(),
   minutes: v.number(),
-  seconds: v.number(),
 });
 
 // Booking Status Schema
@@ -84,7 +83,7 @@ export const FlightSchema = v.object({
   airlineLogo: v.string(),
   iataCode: v.string(),
   airlineName: v.string(),
-  j: v.string(),
+  q: v.string(),
   cabin: v.string(),
   transitTime: v.nullable(v.string()),
 });
@@ -107,10 +106,10 @@ export const PassengerSchema = v.object({
 // Success Response Schema
 export const PnrResponseSchema = v.object({
   success: v.string(),
-  flights: v.array(FlightSchema),
-  passengers: v.array(PassengerSchema),
-  status: v.number(),
-  error: v.boolean(),
+  data: v.object({
+    flights: v.array(FlightSchema),
+    passengers: v.array(PassengerSchema),
+  }),
   remaining: v.number(),
 });
 

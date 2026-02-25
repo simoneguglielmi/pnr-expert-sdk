@@ -51,10 +51,10 @@ describe('PnrClient', () => {
       const result = await client.fetchPnr(samplePnr);
 
       expect(result.success).toBe('true');
-      expect(result.flights).toHaveLength(1);
-      expect(result.passengers).toHaveLength(2);
-      expect(result.flights[0].flightNumber).toBe('BA282');
-      expect(result.passengers[0].name).toBe('SMITH/JOHNMR');
+      expect(result.data.flights).toHaveLength(1);
+      expect(result.data.passengers).toHaveLength(2);
+      expect(result.data.flights[0].flightNumber).toBe('BA282');
+      expect(result.data.passengers[0].name).toBe('SMITH/JOHNMR');
     });
 
     it('should send correct headers', async () => {

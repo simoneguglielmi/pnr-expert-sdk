@@ -169,7 +169,6 @@ describe('Schemas', () => {
         days: 0,
         hours: 10,
         minutes: 25,
-        seconds: 0,
       });
       expect(result.success).toBe(true);
     });
@@ -278,7 +277,6 @@ describe('Schemas', () => {
         days: 0,
         hours: 10,
         minutes: 25,
-        seconds: 0,
       },
       status: { code: 'SS', name: 'Seat Sold' },
       operatedBy: { airlineName: null, iataCode: null, flightNo: null },
@@ -291,7 +289,7 @@ describe('Schemas', () => {
       airlineLogo: '/images/airlines/ba.png',
       iataCode: 'BA',
       airlineName: 'British Airways',
-      j: 'Business',
+      q: 'Business',
       cabin: 'Business',
       transitTime: null,
     };
@@ -313,10 +311,10 @@ describe('Schemas', () => {
   describe('PnrResponseSchema', () => {
     const validResponse = {
       success: 'true',
-      flights: [],
-      passengers: [],
-      status: 200,
-      error: false,
+      data: {
+        flights: [],
+        passengers: [],
+      },
       remaining: 2500,
     };
 
