@@ -18,6 +18,9 @@ export type {
   PnrResponse,
   Seat,
   Status,
+  ErrorConstructor,
+  ErrorFormatter,
+  ErrorSummary,
 } from './types.js';
 
 // Schemas (for advanced usage)
@@ -49,4 +52,5 @@ export {
   UnauthorizedError,
   UnprocessableEntryError,
   ValidationError,
+  getError,
 } from './errors.js';

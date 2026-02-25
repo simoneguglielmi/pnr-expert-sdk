@@ -175,54 +175,16 @@ yarn test tests/integration.test.ts
 The SDK provides specific error classes for different API errors:
 
 ```typescript
-import {
-  PnrClient,
-  UnauthorizedError,
-  RequestLimitError,
-  InvalidJsonError,
-  NoPnrProvidedError,
-  UnprocessableEntryError,
-  ValidationError,
-  TimeoutError,
-  NetworkError,
-  PnrError,
-} from 'pnr-expert-sdk';
+import { PnrClient, getError } from 'pnr-expert-sdk';
 
 const client = new PnrClient({ token: 'your-token' });
-
-const logError = (label: string, message: string, extra?: unknown) => {
-  console.error(`${label}: ${message}`);
-  if (extra !== undefined) {
-    console.error('Details:', extra);
-  }
-};
 
 try {
   const result = await client.fetchPnr(pnr);
   console.log('PNR parsed successfully:', result.data);
 } catch (error) {
-  if (error instanceof ValidationError) {
-    logError('Validation error', error.message, error.issues);
-  } else if (error instanceof UnauthorizedError) {
-    logError('Authentication failed', error.message);
-  } else if (error instanceof RequestLimitError) {
-    logError('Rate limit reached', error.message);
-  } else if (error instanceof InvalidJsonError) {
-    logError('Invalid JSON', error.message);
-  } else if (error instanceof NoPnrProvidedError) {
-    logError('No PNR provided', error.message);
-  } else if (error instanceof UnprocessableEntryError) {
-    logError('Cannot process PNR', error.message);
-  } else if (error instanceof TimeoutError) {
-    logError('Request timed out', error.message);
-  } else if (error instanceof NetworkError) {
-    logError('Network error', error.message);
-  } else if (error instanceof PnrError) {
-    logError('API error', error.message, { status: error.statusCode });
-  } else {
-    const message = error instanceof Error ? error.message : String(error);
-    logError('Unexpected error', message);
-  }
+  const { title, details } = getError(error);
+  console.error(title, ...details);
 }
 ```
 

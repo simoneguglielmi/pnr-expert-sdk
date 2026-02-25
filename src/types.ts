@@ -46,3 +46,11 @@ export interface PnrClientOptions {
    */
   timeout?: number;
 }
+
+export type ErrorSummary = {
+  title: string;
+  details: unknown[];
+};
+
+export type ErrorConstructor = new (...args: any[]) => Error;
+export type ErrorFormatter = (error: Error) => [string, ...unknown[]];
