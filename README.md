@@ -34,8 +34,8 @@ const pnr = `RP/LON1A2345/LON1A2345            OM/SU  30MAR25/1430Z   9XZABC
 
 const result = await client.fetchPnr(pnr);
 
-console.log(result.flights); // Flight details
-console.log(result.passengers); // Passenger information
+console.log(result.data.flights); // Flight details
+console.log(result.data.passengers); // Passenger information
 console.log(result.remaining); // Remaining API quota
 ```
 
@@ -62,11 +62,11 @@ The `fetchPnr` method returns a `PnrResponse` object with the following structur
 
 ```typescript
 interface PnrResponse {
-  success: string;
-  flights: Flight[];
-  passengers: Passenger[];
-  status: number;
-  error: boolean;
+  success: string; // 'Authorized' or similar
+  data: {
+    flights: Flight[];
+    passengers: Passenger[];
+  };
   remaining: number; // Remaining API quota
 }
 ```
@@ -93,6 +93,7 @@ interface Flight {
   airlineLogo: string; // URL to airline logo
   iataCode: string;
   airlineName: string;
+  q: string; // Booking class descriptor
   cabin: string; // Economy, Business, First
   transitTime: string | null; // Time between connecting flights
 }
@@ -113,7 +114,7 @@ interface Location {
   type: string;
   multi_terminal: string | null;
   time: string; // ISO 8601 datetime
-  terminal: string;
+  terminal: string | null; // Terminal information
 }
 ```
 
@@ -133,6 +134,41 @@ interface Seat {
   seat: string; // e.g., "12A"
 }
 ```
+
+## Testing
+
+### Running Tests
+
+```bash
+# Run all tests
+yarn test
+
+# Run specific test file
+yarn test tests/client.test.ts
+```
+
+### Integration Tests
+
+Integration tests require a valid API key. Create a `.env` file in the project root:
+
+```bash
+cp .env.example .env
+# Edit .env and add your API_KEY
+API_KEY=your-api-key-here
+```
+
+Then run the integration tests:
+
+```bash
+yarn test tests/integration.test.ts
+```
+
+### Test Files
+
+- `tests/client.test.ts` - Client functionality and error handling
+- `tests/schemas.test.ts` - Schema validation tests
+- `tests/errors.test.ts` - Error class tests
+- `tests/integration.test.ts` - Real API integration tests
 
 ## Error Handling
 
