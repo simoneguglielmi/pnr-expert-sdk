@@ -202,46 +202,6 @@ try {
 | `NetworkError`            | -           | Network connectivity issue         |
 | `PnrError`                | any         | Base class for all SDK errors      |
 
-## Advanced Usage
-
-### Using Valibot Schemas
-
-For advanced use cases, you can import the valibot schemas directly:
-
-```typescript
-import * as v from 'valibot';
-import { PnrResponseSchema, FlightSchema } from 'pnr-expert-sdk';
-
-// Custom validation
-const customFlightSchema = v.object({
-  ...FlightSchema.entries,
-  // Add custom fields
-});
-
-// Manual parsing
-const result = v.safeParse(PnrResponseSchema, apiResponse);
-if (result.success) {
-  console.log(result.output);
-}
-```
-
-### Available Schemas
-
-- `PnrRequestSchema` - Request body validation
-- `PnrResponseSchema` - Success response validation
-- `PnrErrorResponseSchema` - Error response validation
-- `FlightSchema` - Flight object validation
-- `PassengerSchema` - Passenger object validation
-- `LocationSchema` - Airport/location validation
-- `ArrivalLocationSchema` - Arrival location with day offset
-- `AircraftTypeSchema` - Aircraft type validation
-- `DistanceSchema` - Distance (miles/km) validation
-- `FlightDurationSchema` - Duration validation
-- `StatusSchema` - Booking status validation
-- `OperatedBySchema` - Codeshare validation
-- `SeatSchema` - Seat assignment validation
-- `AirportSchema` - Airport details validation
-
 ## API Reference
 
 ### `PnrClient`

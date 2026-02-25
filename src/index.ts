@@ -23,24 +23,6 @@ export type {
   ErrorSummary,
 } from './types.js';
 
-// Schemas (for advanced usage)
-export {
-  AircraftTypeSchema,
-  AirportSchema,
-  ArrivalLocationSchema,
-  DistanceSchema,
-  FlightDurationSchema,
-  FlightSchema,
-  LocationSchema,
-  OperatedBySchema,
-  PassengerSchema,
-  PnrErrorResponseSchema,
-  PnrRequestSchema,
-  PnrResponseSchema,
-  SeatSchema,
-  StatusSchema,
-} from './schemas.js';
-
 // Errors
 export {
   InvalidJsonError,
