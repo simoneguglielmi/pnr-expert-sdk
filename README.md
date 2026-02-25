@@ -190,36 +190,38 @@ import {
 
 const client = new PnrClient({ token: 'your-token' });
 
+const logError = (label: string, message: string, extra?: unknown) => {
+  console.error(`${label}: ${message}`);
+  if (extra !== undefined) {
+    console.error('Details:', extra);
+  }
+};
+
 try {
   const result = await client.fetchPnr(pnr);
+  console.log('PNR parsed successfully:', result.data);
 } catch (error) {
-  if (error instanceof UnauthorizedError) {
-    // Invalid or missing token (401)
-    console.error('Authentication failed:', error.message);
+  if (error instanceof ValidationError) {
+    logError('Validation error', error.message, error.issues);
+  } else if (error instanceof UnauthorizedError) {
+    logError('Authentication failed', error.message);
   } else if (error instanceof RequestLimitError) {
-    // API quota exceeded (401)
-    console.error('Rate limit reached:', error.message);
+    logError('Rate limit reached', error.message);
   } else if (error instanceof InvalidJsonError) {
-    // Malformed request body (400)
-    console.error('Invalid JSON:', error.message);
+    logError('Invalid JSON', error.message);
   } else if (error instanceof NoPnrProvidedError) {
-    // Empty PNR field (422)
-    console.error('No PNR provided:', error.message);
+    logError('No PNR provided', error.message);
   } else if (error instanceof UnprocessableEntryError) {
-    // PNR parsing failed (422)
-    console.error('Cannot process PNR:', error.message);
-  } else if (error instanceof ValidationError) {
-    // Request/response validation failed
-    console.error('Validation error:', error.message, error.issues);
+    logError('Cannot process PNR', error.message);
   } else if (error instanceof TimeoutError) {
-    // Request timed out
-    console.error('Request timed out');
+    logError('Request timed out', error.message);
   } else if (error instanceof NetworkError) {
-    // Network-related error
-    console.error('Network error:', error.message);
+    logError('Network error', error.message);
   } else if (error instanceof PnrError) {
-    // Other API errors
-    console.error('API error:', error.message, 'Status:', error.statusCode);
+    logError('API error', error.message, { status: error.statusCode });
+  } else {
+    const message = error instanceof Error ? error.message : String(error);
+    logError('Unexpected error', message);
   }
 }
 ```
