@@ -1,6 +1,6 @@
 {
   "name": "pnr-expert-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "pnr expert sdk",
   "repository": {},
   "keywords": [
@@ -10,14 +10,14 @@
   ],
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
     }
   },
   "sideEffects": false,
