@@ -62,7 +62,7 @@ The `fetchPnr` method returns a `PnrResponse` object with the following structur
 
 ```typescript
 interface PnrResponse {
-  success: string; // 'Authorized' or similar
+  success: boolean; // Normalized from API string (e.g., 'true', 'Authorized')
   data: {
     flights: Flight[];
     passengers: Passenger[];

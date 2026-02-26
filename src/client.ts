@@ -94,7 +94,10 @@ export class PnrClient {
         );
       }
 
-      return responseResult.output;
+      return {
+        ...responseResult.output,
+        success: normalizeSuccess(responseResult.output.success),
+      };
     } catch (error) {
       clearTimeout(timeoutId);
 
@@ -150,4 +153,9 @@ export class PnrClient {
     headers.append('Authorization', `Bearer ${this.token}`);
     return headers;
   }
+}
+
+function normalizeSuccess(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  return normalized === 'true' || normalized === 'authorized';
 }

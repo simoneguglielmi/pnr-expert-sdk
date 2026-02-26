@@ -50,7 +50,7 @@ describe('PnrClient', () => {
       const client = new PnrClient({ token: 'test-token' });
       const result = await client.fetchPnr(samplePnr);
 
-      expect(result.success).toBe('true');
+      expect(result.success).toBe(true);
       expect(result.data.flights).toHaveLength(1);
       expect(result.data.passengers).toHaveLength(2);
       expect(result.data.flights[0].flightNumber).toBe('BA282');

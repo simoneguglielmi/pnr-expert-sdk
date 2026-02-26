@@ -11,7 +11,11 @@ export const AirportSchema = v.object({
   airportName: v.string(),
   cityName: v.string(),
   countryName: v.string(),
-  airportCode: v.string(),
+  airportCode: v.pipe(
+    v.string(),
+    v.minLength(3, 'Airport code must be 3 characters'),
+    v.maxLength(3, 'Airport code must be 3 characters'),
+  ),
   latitude: v.string(),
   longitude: v.string(),
   timezone: v.string(),
@@ -61,7 +65,13 @@ export const StatusSchema = v.object({
 // Operated By Schema
 export const OperatedBySchema = v.object({
   airlineName: v.nullable(v.string()),
-  iataCode: v.nullable(v.string()),
+  iataCode: v.nullable(
+    v.pipe(
+      v.string(),
+      v.minLength(2, 'IATA code must be 2-3 characters'),
+      v.maxLength(3, 'IATA code must be 2-3 characters'),
+    ),
+  ),
   flightNo: v.nullable(v.string()),
 });
 
@@ -81,7 +91,11 @@ export const FlightSchema = v.object({
   bookingClass: v.string(),
   flightNumber: v.string(),
   airlineLogo: v.string(),
-  iataCode: v.string(),
+  iataCode: v.pipe(
+    v.string(),
+    v.minLength(2, 'IATA code must be 2-3 characters'),
+    v.maxLength(3, 'IATA code must be 2-3 characters'),
+  ),
   airlineName: v.string(),
   q: v.string(),
   cabin: v.string(),

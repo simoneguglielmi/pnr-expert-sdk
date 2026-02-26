@@ -1,24 +1,20 @@
+import 'dotenv/config';
 import { describe, it, expect, beforeAll } from 'vitest';
-import { config } from 'dotenv';
 import { PnrClient } from '../src/client.js';
 import type { PnrResponse } from '../src/types.js';
 
-// Load environment variables from .env file
-config();
-
 describe('PNR Expert SDK Integration Tests', () => {
-  let apiKey: string;
+  let apiKey: string | undefined;
   let client: PnrClient;
+  const errorMessage =
+    'API_KEY environment variable is required for integration tests. Please create a .env file with API_KEY=your-api-key';
 
   beforeAll(() => {
     // Check for API_KEY environment variable
-    apiKey = process.env.API_KEY || '';
+    apiKey = process.env.API_KEY;
 
     if (!apiKey) {
-      throw new Error(
-        'API_KEY environment variable is required for integration tests. ' +
-          'Please create a .env file with API_KEY=your-api-key',
-      );
+      throw new Error(errorMessage);
     }
 
     // Initialize the client with the API key
@@ -30,9 +26,8 @@ describe('PNR Expert SDK Integration Tests', () => {
 
     const response: PnrResponse = await client.fetchPnr(pnrString);
 
-    // Validate response is OK
     expect(response).toBeDefined();
-    expect(response.success).toBeDefined();
+    expect(typeof response.success).toBe('boolean');
     expect(response.data).toBeDefined();
     expect(response.remaining).toBeDefined();
     expect(Array.isArray(response.data.passengers)).toBe(true);

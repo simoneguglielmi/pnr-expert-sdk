@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  getError,
   InvalidJsonError,
   NetworkError,
   NoPnrProvidedError,
@@ -172,6 +173,57 @@ describe('Errors', () => {
     it('should be instance of PnrError', () => {
       const error = new NetworkError('Network unavailable');
       expect(error).toBeInstanceOf(PnrError);
+    });
+  });
+
+  describe('getError', () => {
+    it('should include status for PnrError subclasses', () => {
+      const error = new UnauthorizedError();
+      expect(getError(error)).toEqual({
+        title: 'Authentication failed',
+        details: ['Unauthorized PE433', { status: 401 }],
+      });
+    });
+
+    it('should include issues for validation errors', () => {
+      const issues = [{ path: 'pnr', message: 'Required' }];
+      const error = new ValidationError('Validation failed', issues);
+      expect(getError(error)).toEqual({
+        title: 'Validation error',
+        details: ['Validation failed', issues, { status: undefined }],
+      });
+    });
+
+    it('should preserve status for API errors', () => {
+      const error = new PnrError('Bad gateway', 502);
+      expect(getError(error)).toEqual({
+        title: 'API error',
+        details: ['Bad gateway', { status: 502 }],
+      });
+    });
+
+    it('should normalize unexpected errors', () => {
+      const error = new Error('Boom');
+      expect(getError(error)).toEqual({
+        title: 'Unexpected error',
+        details: ['Boom', { status: undefined }],
+      });
+    });
+
+    it('should normalize abort errors as timeouts', () => {
+      const error = new Error('Aborted');
+      error.name = 'AbortError';
+      expect(getError(error)).toEqual({
+        title: 'Request timed out',
+        details: ['Aborted', { status: undefined }],
+      });
+    });
+
+    it('should normalize unknown values', () => {
+      expect(getError('nope')).toEqual({
+        title: 'Unknown error',
+        details: ['nope', { status: undefined }],
+      });
     });
   });
 });

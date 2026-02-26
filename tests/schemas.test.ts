@@ -66,6 +66,14 @@ describe('Schemas', () => {
       const result = v.safeParse(AirportSchema, { id: 1 });
       expect(result.success).toBe(false);
     });
+
+    it('should reject airport code with invalid length', () => {
+      const result = v.safeParse(AirportSchema, {
+        ...validAirport,
+        airportCode: 'LA',
+      });
+      expect(result.success).toBe(false);
+    });
   });
 
   describe('LocationSchema', () => {
@@ -202,6 +210,15 @@ describe('Schemas', () => {
       });
       expect(result.success).toBe(true);
     });
+
+    it('should reject invalid IATA code length', () => {
+      const result = v.safeParse(OperatedBySchema, {
+        airlineName: 'American Airlines',
+        iataCode: 'A',
+        flightNo: 'AA1234',
+      });
+      expect(result.success).toBe(false);
+    });
   });
 
   describe('SeatSchema', () => {
@@ -305,6 +322,14 @@ describe('Schemas', () => {
         transitTime: '2h 30m',
       });
       expect(result.success).toBe(true);
+    });
+
+    it('should reject invalid flight IATA code length', () => {
+      const result = v.safeParse(FlightSchema, {
+        ...validFlight,
+        iataCode: 'B',
+      });
+      expect(result.success).toBe(false);
     });
   });
 

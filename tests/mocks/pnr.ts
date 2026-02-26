@@ -1,6 +1,6 @@
-import type { PnrResponse } from '../../src/types.js';
+import type { PnrApiResponse } from '../../src/types.js';
 
-export const mockSuccessResponse: PnrResponse = {
+export const mockSuccessResponse: PnrApiResponse = {
   success: 'true',
   data: {
     flights: [

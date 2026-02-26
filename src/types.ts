@@ -17,7 +17,10 @@ import type {
 } from './schemas.js';
 
 export type PnrRequest = v.InferOutput<typeof PnrRequestSchema>;
-export type PnrResponse = v.InferOutput<typeof PnrResponseSchema>;
+export type PnrApiResponse = v.InferOutput<typeof PnrResponseSchema>;
+export type PnrResponse = Omit<PnrApiResponse, 'success'> & {
+  success: boolean;
+};
 export type PnrErrorResponse = v.InferOutput<typeof PnrErrorResponseSchema>;
 
 export type Airport = v.InferOutput<typeof AirportSchema>;
@@ -52,5 +55,9 @@ export type ErrorSummary = {
   details: unknown[];
 };
 
-export type ErrorConstructor = new (...args: any[]) => Error;
-export type ErrorFormatter = (error: Error) => [string, ...unknown[]];
+export type ErrorConstructor<T extends Error = Error> = new (
+  ...args: any[]
+) => T;
+export type ErrorFormatter<T extends Error = Error> = (
+  error: T,
+) => [string, ...unknown[]];

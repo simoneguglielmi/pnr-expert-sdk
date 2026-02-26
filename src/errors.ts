@@ -1,4 +1,4 @@
-import { ErrorFormatter, ErrorConstructor, ErrorSummary } from './types.js';
+import { ErrorSummary } from './types.js';
 
 /**
  * Base error class for PNR Expert SDK errors
@@ -98,45 +98,117 @@ export class NetworkError extends PnrError {
   }
 }
 
-const errorMap = new Map<ErrorConstructor, ErrorFormatter>([
-  [
-    ValidationError,
-    (error) => {
-      if (error instanceof ValidationError) {
-        return ['Validation error', error.message, error.issues];
-      }
-      return ['Validation error', 'Unknown validation error'];
-    },
-  ],
-  [UnauthorizedError, (error) => ['Authentication failed', error.message]],
-  [RequestLimitError, (error) => ['Rate limit reached', error.message]],
-  [InvalidJsonError, (error) => ['Invalid JSON', error.message]],
-  [NoPnrProvidedError, (error) => ['No PNR provided', error.message]],
-  [UnprocessableEntryError, (error) => ['Cannot process PNR', error.message]],
-  [TimeoutError, (error) => ['Request timed out', error.message]],
-  [NetworkError, (error) => ['Network error', error.message]],
-  [
-    PnrError,
-    (error) => {
-      if (error instanceof PnrError) {
-        return ['API error', error.message, { status: error.statusCode }];
-      }
-      return ['API error', 'Unknown API error', { status: undefined }];
-    },
-  ],
-]);
+const formatWithStatus = (
+  title: string,
+  message: string,
+  statusCode?: number,
+  extraDetails: unknown[] = [],
+): [string, ...unknown[]] => [
+  title,
+  message,
+  ...extraDetails,
+  { status: statusCode },
+];
 
 export function getError(error: unknown): ErrorSummary {
-  for (const [ErrorClass, getDetails] of errorMap) {
-    if (error instanceof ErrorClass) {
-      const [title, ...details] = getDetails(error);
-      return { title, details };
-    }
+  if (error instanceof ValidationError) {
+    const [title, ...details] = formatWithStatus(
+      'Validation error',
+      error.message,
+      error.statusCode,
+      [error.issues],
+    );
+    return { title, details };
+  }
+
+  if (error instanceof UnauthorizedError) {
+    const [title, ...details] = formatWithStatus(
+      'Authentication failed',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof RequestLimitError) {
+    const [title, ...details] = formatWithStatus(
+      'Rate limit reached',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof InvalidJsonError) {
+    const [title, ...details] = formatWithStatus(
+      'Invalid JSON',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof NoPnrProvidedError) {
+    const [title, ...details] = formatWithStatus(
+      'No PNR provided',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof UnprocessableEntryError) {
+    const [title, ...details] = formatWithStatus(
+      'Cannot process PNR',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof TimeoutError) {
+    const [title, ...details] = formatWithStatus(
+      'Request timed out',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof NetworkError) {
+    const [title, ...details] = formatWithStatus(
+      'Network error',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
+  }
+
+  if (error instanceof PnrError) {
+    const [title, ...details] = formatWithStatus(
+      'API error',
+      error.message,
+      error.statusCode,
+    );
+    return { title, details };
   }
 
   if (error instanceof Error) {
-    return { title: 'Unexpected error', details: [error.message] };
+    if (error.name === 'AbortError') {
+      const [title, ...details] = formatWithStatus(
+        'Request timed out',
+        error.message,
+      );
+      return { title, details };
+    }
+    return {
+      title: 'Unexpected error',
+      details: [error.message, { status: undefined }],
+    };
   }
 
-  return { title: 'Unknown error', details: [String(error)] };
+  return {
+    title: 'Unknown error',
+    details: [String(error), { status: undefined }],
+  };
 }
