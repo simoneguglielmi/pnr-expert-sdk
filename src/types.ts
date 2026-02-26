@@ -14,6 +14,7 @@ import type {
   PnrResponseSchema,
   SeatSchema,
   StatusSchema,
+  TransitTimeSchema,
 } from './schemas.js';
 
 export type PnrRequest = v.InferOutput<typeof PnrRequestSchema>;
@@ -29,6 +30,7 @@ export type ArrivalLocation = v.InferOutput<typeof ArrivalLocationSchema>;
 export type AircraftType = v.InferOutput<typeof AircraftTypeSchema>;
 export type Distance = v.InferOutput<typeof DistanceSchema>;
 export type FlightDuration = v.InferOutput<typeof FlightDurationSchema>;
+export type TransitTime = v.InferOutput<typeof TransitTimeSchema>;
 export type Status = v.InferOutput<typeof StatusSchema>;
 export type OperatedBy = v.InferOutput<typeof OperatedBySchema>;
 export type Flight = v.InferOutput<typeof FlightSchema>;

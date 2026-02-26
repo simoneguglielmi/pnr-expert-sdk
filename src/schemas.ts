@@ -56,6 +56,12 @@ export const FlightDurationSchema = v.object({
   minutes: v.number(),
 });
 
+// Transit Time Schema
+export const TransitTimeSchema = v.object({
+  hours: v.number(),
+  minutes: v.number(),
+});
+
 // Booking Status Schema
 export const StatusSchema = v.object({
   code: v.string(),
@@ -97,9 +103,8 @@ export const FlightSchema = v.object({
     v.maxLength(3, 'IATA code must be 2-3 characters'),
   ),
   airlineName: v.string(),
-  q: v.string(),
   cabin: v.string(),
-  transitTime: v.nullable(v.string()),
+  transitTime: v.nullable(TransitTimeSchema),
 });
 
 // Seat Assignment Schema

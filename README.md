@@ -93,9 +93,13 @@ interface Flight {
   airlineLogo: string; // URL to airline logo
   iataCode: string;
   airlineName: string;
-  q: string; // Booking class descriptor
   cabin: string; // Economy, Business, First
-  transitTime: string | null; // Time between connecting flights
+  transitTime: TransitTime | null; // Time between connecting flights
+}
+
+interface TransitTime {
+  hours: number;
+  minutes: number;
 }
 ```
 

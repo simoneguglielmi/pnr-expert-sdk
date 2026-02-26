@@ -22,7 +22,10 @@ describe('PNR Expert SDK Integration Tests', () => {
   });
 
   it('should fetch PNR and return valid response', async () => {
-    const pnrString = '1 EN8251Q 20APR 1 TRNMUC SS2  0955  1105  /DCEN /E';
+    const pnrString = `1 EK 98B 07APR 2 FCODXB*SS2 1545 2330 /DCEK /E
+2 EK 318B 08APR 3 DXBNRT*SS2 0240 1735 /DCEK /E
+3 EK 317K 25APR 6 KIXDXB*SS2 2345 0515 26APR 7 /DCEK /E
+4 EK 97K 26APR 7 DXBFCO*SS2 0910 1325 /DCEK /E`;
 
     const response: PnrResponse = await client.fetchPnr(pnrString);
 

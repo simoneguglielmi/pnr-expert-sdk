@@ -67,7 +67,6 @@ export const mockSuccessResponse: PnrApiResponse = {
         airlineLogo: '/images/airlines/ba.png',
         iataCode: 'BA',
         airlineName: 'British Airways',
-        q: 'Business',
         cabin: 'Business',
         transitTime: null,
       },

@@ -15,6 +15,7 @@ import {
   PnrResponseSchema,
   SeatSchema,
   StatusSchema,
+  TransitTimeSchema,
 } from '../src/schemas.js';
 
 describe('Schemas', () => {
@@ -182,6 +183,24 @@ describe('Schemas', () => {
     });
   });
 
+  describe('TransitTimeSchema', () => {
+    it('should validate valid transit time', () => {
+      const result = v.safeParse(TransitTimeSchema, {
+        hours: 3,
+        minutes: 10,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject non-numeric values', () => {
+      const result = v.safeParse(TransitTimeSchema, {
+        hours: '3',
+        minutes: 10,
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
   describe('StatusSchema', () => {
     it('should validate valid status', () => {
       const result = v.safeParse(StatusSchema, {
@@ -319,7 +338,7 @@ describe('Schemas', () => {
     it('should validate flight with transitTime', () => {
       const result = v.safeParse(FlightSchema, {
         ...validFlight,
-        transitTime: '2h 30m',
+        transitTime: { hours: 2, minutes: 30 },
       });
       expect(result.success).toBe(true);
     });

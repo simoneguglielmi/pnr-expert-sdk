@@ -18,6 +18,7 @@ export type {
   PnrResponse,
   Seat,
   Status,
+  TransitTime,
   ErrorConstructor,
   ErrorFormatter,
   ErrorSummary,
