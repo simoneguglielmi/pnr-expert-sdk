@@ -1,26 +1,26 @@
-import type * as v from 'valibot';
+import type * as v from "valibot";
 import type {
-  AircraftTypeSchema,
-  AirportSchema,
-  ArrivalLocationSchema,
-  DistanceSchema,
-  FlightDurationSchema,
-  FlightSchema,
-  LocationSchema,
-  OperatedBySchema,
-  PassengerSchema,
-  PnrErrorResponseSchema,
-  PnrRequestSchema,
-  PnrResponseSchema,
-  SeatSchema,
-  StatusSchema,
-  TransitTimeSchema,
-} from './schemas.js';
+	AircraftTypeSchema,
+	AirportSchema,
+	ArrivalLocationSchema,
+	DistanceSchema,
+	FlightDurationSchema,
+	FlightSchema,
+	LocationSchema,
+	OperatedBySchema,
+	PassengerSchema,
+	PnrErrorResponseSchema,
+	PnrRequestSchema,
+	PnrResponseSchema,
+	SeatSchema,
+	StatusSchema,
+	TransitTimeSchema,
+} from "./schemas.js";
 
 export type PnrRequest = v.InferOutput<typeof PnrRequestSchema>;
 export type PnrApiResponse = v.InferOutput<typeof PnrResponseSchema>;
-export type PnrResponse = Omit<PnrApiResponse, 'success'> & {
-  success: boolean;
+export type PnrResponse = Omit<PnrApiResponse, "success"> & {
+	success: boolean;
 };
 export type PnrErrorResponse = v.InferOutput<typeof PnrErrorResponseSchema>;
 
@@ -38,28 +38,28 @@ export type Seat = v.InferOutput<typeof SeatSchema>;
 export type Passenger = v.InferOutput<typeof PassengerSchema>;
 
 export interface PnrClientOptions {
-  /**
-   * Bearer token for API authentication
-   */
-  token: string;
-  /**
-   * Base URL for the API (defaults to https://www.pnrexpert.com)
-   */
-  baseUrl?: string;
-  /**
-   * Request timeout in milliseconds (defaults to 30000)
-   */
-  timeout?: number;
+	/**
+	 * Bearer token for API authentication
+	 */
+	token: string;
+	/**
+	 * Base URL for the API (defaults to https://www.pnrexpert.com)
+	 */
+	baseUrl?: string;
+	/**
+	 * Request timeout in milliseconds (defaults to 30000)
+	 */
+	timeout?: number;
 }
 
 export type ErrorSummary = {
-  title: string;
-  details: unknown[];
+	title: string;
+	details: unknown[];
 };
 
 export type ErrorConstructor<T extends Error = Error> = new (
-  ...args: any[]
+	...args: unknown[]
 ) => T;
 export type ErrorFormatter<T extends Error = Error> = (
-  error: T,
+	error: T,
 ) => [string, ...unknown[]];
